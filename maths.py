@@ -1,4 +1,12 @@
 import random
+import operator
+
+ops = {
+    "+":operator.add,
+    "-":operator.sub,
+    "*":operator.mul,
+    "/":operator.div
+}
 
 def system_exit():
     global correct
@@ -26,12 +34,7 @@ def append_to_list(number_1, operator, number_2, answer, solution):
 
 def solve_math_problem(number_1, operator, number_2, answer):
     #handle operator
-    if operator == "*":
-        solution = number_1*number_2
-    elif operator == "+":
-        solution = number_1+number_2
-    elif operator == "-":
-        solution = number_1-number_2
+    solution = ops[operator](int(number_1), int(number_2))
     #determine if user entered correct solution
     if solution == int(answer):
         global correct
@@ -45,7 +48,9 @@ def solve_math_problem(number_1, operator, number_2, answer):
 
         
 def print_math_problem(number_1, operator, number_2):
-    problem = str(number_1)+operator+str(number_2)+"=?"
+    if operator == "/" and number_1 == "0" or number_2 == 0:
+        generate_math_problem()
+    problem = str(number_1)+" "+operator+" "+str(number_2)+" = ?"
     print problem
     answer = raw_input("Solution:")
     #check input is valid number
@@ -59,9 +64,9 @@ def print_math_problem(number_1, operator, number_2):
 def generate_math_problem():
     global attempts
     attempts+=1
-    operators = ["*","+","-"]
-    number_1 = random.randint(0,50)
-    number_2 = random.randint(0,50)
+    operators = ["*","+","-","/"]
+    number_1 = random.randint(-15,15)
+    number_2 = random.randint(-15,15)
     operator = random.choice(operators)
     print_math_problem(number_1,operator,number_2)
 
